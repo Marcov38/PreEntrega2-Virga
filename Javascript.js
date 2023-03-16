@@ -69,12 +69,12 @@ const subtotal = comprarProducto()
 
 const subtotalMayorista = descuentoMayorista(subtotal)
 
-console.log(subtotalMayorista);
+console.log('El total de tu compra es $'+subtotalMayorista+' '+'Muchas gracias por tu compra!');
 
 let preguntaInicial = prompt('Danos tu puntuacion de nuestra pagina web (Siendo 1 el mas bajo y 10 el mas alto');
 
 if (preguntaInicial <= 5){
-    alert('Sentimos mucho que no hayas disfrutado de nuestra web, por favor ponte en contacto a travez del formulario para indicarnos que fue mal');
+    alert('Sentimos mucho que no hayas disfrutado de nuestra web, por favor ponte en contacto a traves del formulario para indicarnos que fue mal');
 }else if(preguntaInicial > 5 && preguntaInicial <= 7){
     alert('Trataremos de mejorar la experiencia de los usuarios en base a los comentarios que recibamos, muchas gracias por tu opinion');
 }else if(preguntaInicial > 7 && preguntaInicial <= 10){123
