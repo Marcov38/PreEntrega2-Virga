@@ -1,28 +1,75 @@
-function saludar(){
-    let nombre=prompt('Ingresa tu nombre');
-    alert('Te damos la bienvenida '+nombre);
+alert('Bienvenido a HiMyParty');
+
+function comprarProducto() {
+    let producto = '';
+    let cantidad = 0;
+    let precio = 0;
+    let subtotal = 0;
+    let continuaCompra = false;
+
+
+    do {
+        alert('Los productos son:\n 1-Tarjeta1... precio:$5000\n 2-Tarjeta2... precio:$6000\n 3-Tarjeta3... precio:$10000\n 4-Tarjeta4... precio:$15000');
+        producto = prompt('¿Que producto queres comprar? Indica solo el numero');
+        cantidad = parseInt(prompt('¿Cuantas unidades vas a comprar?'));
+
+        let cantidadValidada = validarCantidad(cantidad);
+
+        switch (producto) {
+            case '1':
+                precio = 5000;
+                break;
+            case '2':
+                precio = 6000;
+                break;
+            case '3':
+                precio = 10000;
+                break;
+            case '4':
+                precio = 15000;
+                break;
+            default:
+                alert('Alguno de los datos no es correcto');
+                precio = 0;
+                cantidadValidada = 0;
+                break;
+        }
+
+
+        subtotal += precio * cantidadValidada;
+
+        continuaCompra = confirm('¿Desea seguir comprando?');
+
+    } while (continuaCompra);
+
+    return subtotal;
 }
-saludar();
 
-
-let mensajeCompra = prompt('¿Deseas comprar alguno de nuestros productos? (Seleccione 1-Si / 2-No)');
-
-while(mensajeCompra == 1 || mensajeCompra.toLowerCase('Si') == 'si'){
-    let seleccionProducto = prompt('1-Tarjeta1\n2-Tarjeta2\n3-Tarjeta3\n4-Tarjeta4');
-    if(seleccionProducto == '1' || seleccionProducto.toLowerCase('Tarjeta1') == 'tarjeta1'){
-        alert('Se ha añadido Tarjeta 1 a tu carro de compras Precio: $5000');
-    }else if (seleccionProducto == '2' || seleccionProducto.toLowerCase('Tarjeta2') == 'tarjeta2'){
-        alert('Se ha añadido Tarjeta 2 a tu carro de compras Precio: $6000');
-    }else if (seleccionProducto == '3' || seleccionProducto.toLowerCase('Tarjeta3') == 'tarjeta3'){
-        alert('Se ha añadido Tarjeta 3 a tu carro de compras Precio: $9000');
-    }else if (seleccionProducto == '4'|| seleccionProducto.toLowerCase('Tarjeta4') == 'tarjeta4'){
-        alert('Se ha añadido Tarjeta 4 a tu carro de compras Precio: $15000');
-    }else{
-        alert('El numero de producto ingresado no es valido o no esta en stock')
+function validarCantidad(cantidad) {
+    while (Number.isNaN(cantidad) || cantidad === 0) {
+        alert('Ingresa un valor correcto!');
+        cantidad = parseInt(prompt('¿Cuantas unidades vas a comprar?'));
     }
-    mensajeCompra = prompt('¿Deseas comprar otro de nuestros productos? (Seleccione 1-Si / 2-No)');
+    return cantidad;
+
 }
 
+
+function descuentoMayorista(cantidad) {
+    if (cantidad >=10) {
+        return subtotal * 0.90 // 10% de descuento
+    }else if(cantidad >=20){
+        return subtotal * 0.80 // 20% de descuento
+    }else{
+        return subtotal
+    }
+}
+
+const subtotal = comprarProducto()
+
+const subtotalMayorista = descuentoMayorista(subtotal)
+
+console.log(subtotalMayorista);
 
 let preguntaInicial = prompt('Danos tu puntuacion de nuestra pagina web (Siendo 1 el mas bajo y 10 el mas alto');
 
@@ -35,3 +82,7 @@ if (preguntaInicial <= 5){
 }else{
     alert('El valor ingresado no es valido.');
 }
+
+
+
+
