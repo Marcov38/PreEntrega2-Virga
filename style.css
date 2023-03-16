@@ -1,0 +1,11 @@
+body{
+    background-color:black;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+}
+
+.hola__pagina h1{
+    color: yellowgreen;
+}
+
