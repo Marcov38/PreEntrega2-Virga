@@ -1,87 +1,113 @@
-alert('Bienvenido a HiMyParty');
-
-function comprarProducto() {
-    let producto = '';
-    let cantidad = 0;
-    let precio = 0;
-    let subtotal = 0;
-    let continuaCompra = false;
-
-
-    do {
-        alert('Los productos son:\n 1-Tarjeta1... precio:$5000\n 2-Tarjeta2... precio:$6000\n 3-Tarjeta3... precio:$10000\n 4-Tarjeta4... precio:$15000');
-        producto = prompt('¿Que producto queres comprar? Indica solo el numero');
-        cantidad = parseInt(prompt('¿Cuantas unidades vas a comprar?'));
-
-        let cantidadValidada = validarCantidad(cantidad);
-
-        switch (producto) {
-            case '1':
-                precio = 5000;
-                break;
-            case '2':
-                precio = 6000;
-                break;
-            case '3':
-                precio = 10000;
-                break;
-            case '4':
-                precio = 15000;
-                break;
-            default:
-                alert('Alguno de los datos no es correcto');
-                precio = 0;
-                cantidadValidada = 0;
-                break;
+function miCarritoDeCompras(){
+    const productos = [
+        { id: 1, nombre: "Tarjeta de cumpleaños 1", precio: 10000, },
+        { id: 2, nombre: "Tarjeta de cumpleaños 2", precio: 20000, },
+        { id: 3, nombre: "Tarjeta de cumpleaños 3", precio: 30000, },
+        { id: 4, nombre: "Tarjeta de boda 1", precio: 30000, },
+        { id: 5, nombre: "Tarjeta de boda 2", precio: 40000, },
+        { id: 6, nombre: "Tarjeta de boda 3", precio: 45000, },
+      ];
+      
+      function mostrarCatalogo() {
+        let mensaje = "Seleccione un producto:\n\n";
+        let opciones = "";
+        
+        for (const producto of productos) {
+          opciones += `${producto.id}. ${producto.nombre} - $${producto.precio}\n`;
         }
-
-
-        subtotal += precio * cantidadValidada;
-
-        continuaCompra = confirm('¿Desea seguir comprando?');
-
-    } while (continuaCompra);
-
-    return subtotal;
-}
-
-function validarCantidad(cantidad) {
-    while (Number.isNaN(cantidad) || cantidad === 0) {
-        alert('Ingresa un valor correcto!');
-        cantidad = parseInt(prompt('¿Cuantas unidades vas a comprar?'));
+      
+        let idProducto = parseInt(prompt(`${mensaje}${opciones}\nIngrese el ID del producto deseado:`));
+        let cantidad = parseInt(prompt("Ingrese la cantidad deseada:"));
+      
+        if (isNaN(cantidad) || cantidad <= 0) {
+          alert("Cantidad inválida");
+          return;
+        }
+      
+        while (isNaN(idProducto) || idProducto <= 0 || idProducto > productos.length) {
+          alert("Producto inválido");
+          idProducto = parseInt(prompt(`${mensaje}${opciones}\nIngrese el ID del producto deseado:`));
+        }
+      
+        const productoSeleccionado = productos.find((producto) => producto.id === idProducto);
+      
+        agregarAlCarrito(productoSeleccionado, cantidad);
+      
+        const continuarComprando = confirm("¿Desea seguir comprando o desea ver su carrito final?");
+      
+        if (continuarComprando) {
+          mostrarCatalogo();
+        } else {
+          mostrarCarrito();
+        }
+      }
+      
+      
+      function mostrarCarrito() {
+        const carrito = JSON.parse(sessionStorage.getItem("carrito")) || [];
+      
+        if (carrito.length /* A */=== 0) {
+          alert("Su carrito está vacío");
+          return;
+        }
+      
+        let mensaje = "Su carrito contiene:\n\n";
+      
+        let total = 0;
+      
+        for (const item of carrito) {
+          mensaje += `${item.producto.nombre} - Cantidad: ${item.cantidad} - Subtotal: $${item.subtotal}\n`;
+          total += item.subtotal;
+        }
+      
+        mensaje += `\nTotal: $${total}\n\n¿Desea confirmar la compra?`;
+      
+        const opcion = confirm(mensaje);
+      
+        if (opcion) {
+      
+          alert("¡Su compra ha sido realizada con éxito!");
+        } else {
+          sessionStorage.removeItem("carrito");
+      
+          alert("¡Gracias por su tiempo!");
+        }
+      }
+      
+      function agregarAlCarrito(producto, cantidad) {
+        const carrito = JSON.parse(sessionStorage.getItem("carrito")) || [];
+      
+        const itemExistente = carrito.find((item) => item.producto.id === producto.id);
+      
+        if (itemExistente) {
+          itemExistente.cantidad += cantidad;
+          itemExistente.subtotal = itemExistente.cantidad * itemExistente.precio;
+        } else {
+        carrito.push({
+        producto,
+        cantidad,
+        subtotal: cantidad * producto.precio,
+        });
+        }
+        
+        sessionStorage.setItem("carrito", JSON.stringify(carrito));
+        }
+        
+        function iniciar() {
+        const opcion = confirm("Bienvenido a Hi My Party, ¿desea ver el catálogo de productos?");
+        
+        if (opcion) {
+        mostrarCatalogo();
+        } else {
+        alert("¡Gracias por su tiempo!");
+        }
+        }
+        
+        window.onload = iniciar;
+    
     }
-    return cantidad;
-
-}
-
-
-function descuentoMayorista(cantidad) {
-    if (cantidad >=10) {
-        return subtotal * 0.90 // 10% de descuento
-    }else if(cantidad >=20){
-        return subtotal * 0.80 // 20% de descuento
-    }else{
-        return subtotal
-    }
-}
-
-const subtotal = comprarProducto()
-
-const subtotalMayorista = descuentoMayorista(subtotal)
-
-console.log('El total de tu compra es $'+subtotalMayorista+' '+'Muchas gracias por tu compra!');
-
-let preguntaInicial = prompt('Danos tu puntuacion de nuestra pagina web (Siendo 1 el mas bajo y 10 el mas alto');
-
-if (preguntaInicial <= 5){
-    alert('Sentimos mucho que no hayas disfrutado de nuestra web, por favor ponte en contacto a traves del formulario para indicarnos que fue mal');
-}else if(preguntaInicial > 5 && preguntaInicial <= 7){
-    alert('Trataremos de mejorar la experiencia de los usuarios en base a los comentarios que recibamos, muchas gracias por tu opinion');
-}else if(preguntaInicial > 7 && preguntaInicial <= 10){123
-    alert('Nos complace poder ofrecer una buena experiencia a nuestros usuarios, muchas gracias por tu opinion.');
-}else{
-    alert('El valor ingresado no es valido.');
-}
+    
+    miCarritoDeCompras();
 
 
 
