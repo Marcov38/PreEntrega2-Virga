@@ -9,7 +9,7 @@ function miCarritoDeCompras(){
       ];
       
       function mostrarCatalogo() {
-        let mensaje = "Seleccione un producto:\n\n";
+        let mensaje = "Bienvenidos al catalogo, por favor seleccione un producto:\n\n";
         let opciones = "";
         
         for (const producto of productos) {
